@@ -1,0 +1,63 @@
+/*/////////////////////////////////////////////////////////////////////////
+                        Assignment 1 - Reflection
+Full Name  : Daniel Jung
+Student ID#: 046435038
+Email      : djung1@myseneca.ca
+Section    : NGG
+
+Authenticity Declaration:
+I declare this submission is the result of my own work and has not been
+shared with any other student or 3rd party content provider. This submitted
+piece of work is entirely of my own creation.
+/////////////////////////////////////////////////////////////////////////*/
+
+1. In this workshop, there were many times that functions required similar steps to perform. For these repetitive tasks,
+I created a number of extra helper functions that were not outlined in the documentation to avoid repeating work that 
+was already done.
+
+One function that I created to do a large amount of work was sortAppointments:
+	void sortAppointments(struct Appointment appoints[], struct Appointment sortedAppoints[]);
+This function takes two arrays of Appointment structs, one that contains various appointments, and the other as a target.
+After this function executes, it returns an array of Appointments in the sortedAppoints array that contains all of the 
+Appointments from the appoints array in order of date and time. I created this helper function for two purposes. The main
+reason for creating this function was because the act of sorting an array of Appointments is a long task, and if I included
+the code for sorting in all functions that required it, the individual functions would be way too long. Also, two functions
+(viewAllAppointments and viewAppointmentSchedule) require sorting the list of appointments prior to displaying them. Through
+creating a function that returns a sorted array of Appointments, I can call it for both of these functions and print the
+Appointments in order.
+
+Another helper function that I made was:
+	int appointmentTimeToMinutes(struct Appointment appointment);
+This function takes a single Appointment struct and returns its date (year % 2000 to avoid potential overflow) in minutes.
+Through using this function, I was able to compare the dates of Appointments without needing to constantly compare their
+year, month, day, hour and minute values. Instead, I can pass the appointment into this function, convert their date to minutes
+and then compare their minute values. I called this function several times, including the sortAppointments function that I 
+mentioned earlier, as well as addAppointment to check if there was an existing appointment at the given date. 
+
+A final example of an extra helper function that I created was:
+	struct Appointment inputAppointmentDate(void);
+This function takes user input for a year, month and date, and returns an Appointment struct that contains that date with no 
+patientNumber. My main reason for creating this function was because I saw multiple points in the program that take user input
+for an appointment date that follow the same format, such as in viewAppointmentSchedule and addAppointment, among others. 
+Creating this function allowed me to create an Appointment object with a date that I can either populate with a patientNumber
+(in the case of addAppointment) or compare to other Appointment dates (like in viewAppointmentSchedule).
+
+2. In my clinic.c file, there were no scanf function calls. Through using the helper functions detailed in core.c, we can avoid
+calling the scanf function. In coding, there are often many dangerous ways that a user can cause a program to give unexpected
+input, which makes the program in turn produce unexpected output. The scanf calls that take user input are all contained within 
+the core.c function, which each validates for a different condition and build on one another. Through using scanf calls sparingly,
+we can ensure that the user inputs pass a set of rigorous conditions and that the output is within a certain boundary that we, the
+programmer, set. With this controlled input method, we minimize the risk of unwanted user inputs, and thus, ensure that the final
+program behaves in a predictable manner, with validation and error messages that we have written and accounted for.
+
+3. The sortAppointments function was ultimately placed in my clinic.c file under the UTILITY FUNCTIONS section, along with the 
+appointmentTimeToMinutes function. This was due to the fact that these two functions are particular to the clinic.c functionality
+and use structs that are defined in the clinic.h header, namely Appointments. In the core.c file of helper functions, these are 
+primarily for validating user input (like inputIntPositive and inputCString) and performing functions on primitives, like
+displayPhoneNumber. They do not deal with clinic-specific structs or data, and are much more general purpose than sortAppointments
+and appointmentTimeToMinutes. Since these two functions helped with the processing of data, and did not do any printing to the
+stdout, they fit best in the utility functions section, since they help other functions output their data according to their
+specifications. 
+	The inputAppointmentDate function also went into the clinic.c file for the same reason as the others, but instead went under
+the USER INPUT FUNCTIONS section. This, albeit somewhat obviously, is because the inputAppointmentDate function takes a user
+input and returns the Appointment struct with the date stored to it. 
